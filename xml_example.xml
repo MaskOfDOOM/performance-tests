@@ -1,0 +1,11 @@
+<user>
+    <id>1</id>
+    <first_name>Doe</first_name>
+    <last_name>John</last_name>
+    <address>
+        <street></street>
+        <city></city>
+        <zip></zip>
+    </adress>
+
+</user>
