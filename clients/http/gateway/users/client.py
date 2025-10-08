@@ -21,7 +21,7 @@ class UsersGatewayHTTPClient(HTTPClient):
         Получить данные пользователя по его user_id.
 
         :param user_id: Идентификатор пользователя.
-        :return: ответ от сервера (объект http.Response).
+        :return: ответ от сервера (объект httpx.Response).
         """
         return self.get(f"/api/v1/users/{user_id}")
     
@@ -30,6 +30,6 @@ class UsersGatewayHTTPClient(HTTPClient):
         Создание нового пользователя.
 
         :param request: Словарь с данными нового пользователя.
-        :return: Ответ от сервера.
+        :return: Ответ от сервера (объект httpx.Response).
         """
         return self.post(".api/v1/users", json=request)

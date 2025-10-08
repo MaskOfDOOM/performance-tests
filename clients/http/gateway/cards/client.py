@@ -25,7 +25,7 @@ class CardsGatewayHTTPClient(HTTPClient):
         Создание виртуальной карты
 
         :param request: Словарь с данными, необходимыми для выпуска карты
-        :return: Ответ от сервера.
+        :return: Ответ от сервера (объект httpx.Response).
         """
         return self.post("/api/v1/cards/issue-virtual-card", json=request)
     
@@ -35,6 +35,6 @@ class CardsGatewayHTTPClient(HTTPClient):
         Создание физической карты
 
         :param request: Словарь с данными, необходимыми для выпуска карты
-        :return: Ответ от сервера.
+        :return: Ответ от сервера (объект httpx.Response).
         """
         return self.post("/api/v1/cards/issue-physical-card", json=request)
