@@ -30,6 +30,6 @@ class UsersGatewayHTTPClient(HTTPClient):
         Создание нового пользователя.
 
         :param request: Словарь с данными нового пользователя.
-        :return: Ответ от сервера (объект http.Response).
+        :return: Ответ от сервера.
         """
         return self.post(".api/v1/users", json=request)
