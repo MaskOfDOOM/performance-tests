@@ -28,6 +28,7 @@ open_debit_card_account_response = httpx.post(
 )
 open_debit_card_account_response_data = open_debit_card_account_response.json()
 
+#Операция пополнения карты
 
 make_top_up_operation_payload = {
   "status": "COMPLETED",
