@@ -20,7 +20,7 @@ class CardsGatewayHTTPClient(HTTPClient):
     """
     Клиент для взаимодействия с /api/v1/cards сервиса http-gateway
     """
-    def issue_virtual_card_api(self, request) -> Response:
+    def issue_virtual_card_api(self, request: IssueVirtualCardRequestDict) -> Response:
         """
         Создание виртуальной карты
 
@@ -30,7 +30,7 @@ class CardsGatewayHTTPClient(HTTPClient):
         return self.post("/api/v1/cards/issue-virtual-card", json=request)
     
 
-    def issue_physical_card_api(self, request) -> Response:
+    def issue_physical_card_api(self, request: IssuePhysicalCardRequestDict) -> Response:
         """
         Создание физической карты
 
