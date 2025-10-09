@@ -1,0 +1,82 @@
+from clients.http.client import HTTPClient
+from httpx import Response
+from typing import TypedDict
+
+class GetAccountsQueryDict(TypedDict):
+    """
+    Структура данных для получения списка счетов пользователя.
+    """
+    userId: str
+
+class OpenDepositAccountRequestDict(TypedDict):
+    """
+    Структура данных для открытия депозитного счета.
+    """
+    userId: str
+
+class OpenSavingsAccountRequestDict(TypedDict):
+    """
+    Структура данных для открытия сберегательного счета.
+    """
+    userId: str
+
+class OpenDebitCardAccountRequestDict(TypedDict):
+    """
+    Структура данных для открытия дебитого счета.
+    """
+    userId: str
+
+class OpenCreditCardAccountRequestDict(TypedDict):
+    """
+    Структура данных для открытия кредитного счета.
+    """
+    userId: str
+
+class AccountGatewayHTTPClient(HTTPClient):
+    """
+    Клиент для взаимодействия с /api/v1/accounts сервиса http-gateway.
+    """
+    def get_accounts_api(self, query: GetAccountsQueryDict) -> Response:
+        """
+        Выполняет Get-запрос на получение списка счетов пользователя.
+
+        :param query: Словарь с параметрами запроса, например {'userId': '123'}.
+        :return: Объект httpx.Response с данными о счетах.
+        """
+        return self.get("/api/v1/accounts", params=query)
+    
+    def open_deposit_account_api(self, request: OpenDepositAccountRequestDict) -> Response:
+        """
+        Выполняет POST-запрос для открытия депозитного счета.
+
+        :param request: Словарь с данными, необходимыми для открытия счета.
+        :return Объект httpx.Response с результатом операции.
+        """
+        return self.post("api/v1/accounts/open-deposit-account", json=request)
+    
+    def open_savings_account_api(self, request: OpenSavingsAccountRequestDict) -> Response:
+        """
+        Выполняет POST-запрос для открытия сберегательного счета.
+        
+        :param request: Словарь с данными, необходимыми для открытия счета.
+        :return Объект httpx.Response с результатом операции.
+        """       
+        return self.post("api/v1/accounts/open-savings-account", json=request)
+    
+    def open_debit_card_account_api(self, request: OpenDebitCardAccountRequestDict) -> Response:
+        """
+        Выполняет POST-запрос для открытия дебитового счета.
+        
+        :param request: Словарь с данными, необходимыми для открытия счета.
+        :return Объект httpx.Response с результатом операции.
+        """        
+        return self.post("api/v1/accounts/open-debit-card-account", json=request)
+    
+    def open_credit_card_account_api(self, request: OpenCreditCardAccountRequestDict) -> Response:
+        """
+        Выполняет POST-запрос для открытия кредитного счета.
+        
+        :param request: Словарь с данными, необходимыми для открытия счета.
+        :return Объект httpx.Response с результатом операции.
+        """        
+        return self.post("api/v1/accounts/open-credit-card-account", json=request)
