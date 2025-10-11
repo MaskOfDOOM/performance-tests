@@ -33,7 +33,7 @@ class OpenCreditCardAccountRequestDict(TypedDict):
     """
     userId: str
 
-class AccountGatewayHTTPClient(HTTPClient):
+class AccountsGatewayHTTPClient(HTTPClient):
     """
     Клиент для взаимодействия с /api/v1/accounts сервиса http-gateway.
     """
@@ -82,10 +82,10 @@ class AccountGatewayHTTPClient(HTTPClient):
         """        
         return self.post("api/v1/accounts/open-credit-card-account", json=request)
     
-def build_account_gateway_http_client() -> AccountGatewayHTTPClient:
+def build_account_gateway_http_client() -> AccountsGatewayHTTPClient:
     """
     Функция создаёт экземпляр AccountGatewayHTTPClient с уже настроенным HTTP-клиентом.
 
     :return: Готовый к использованию AccountGatewayHTTPClient.
     """
-    return AccountGatewayHTTPClient(client=build_gateway_http_client())
+    return AccountsGatewayHTTPClient(client=build_gateway_http_client())
