@@ -118,7 +118,7 @@ account_dict = {
 }
 account_dict_model = AccountSchema(**account_dict)
 print('Account dict model:', account_dict_model)
-print('словарь', account_dict_model.model_dump(by_alias=True))
+print('Словарь', account_dict_model.model_dump(by_alias=True))
 
 
 
