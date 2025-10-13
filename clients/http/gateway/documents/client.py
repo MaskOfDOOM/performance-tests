@@ -15,15 +15,13 @@ class GetTariffDocumentResponseDict(TypedDict):
     """
     Описание структуры ответа при получении документа с описанием тарифа.
     """
-    url: str
-    document: str
+    tariff: list[DocumentDict]
 
 class GetContractDocumentResponseDict(TypedDict):
     """
     Описание структуры ответа при получении документа с описанием условий контракта.
     """
-    url: str
-    document: str
+    contract: list[DocumentDict]
 
 
 class DocumentsGatewayHTTPClient(HTTPClient):
