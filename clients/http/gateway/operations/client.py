@@ -1,146 +1,61 @@
 from clients.http.client import HTTPClient
-from typing import TypedDict
-from httpx import Response
-
+from httpx import QueryParams, Response
 from clients.http.gateway.client import build_gateway_http_client
+from clients.http.gateway.operations.schema import (
+    BaseOperationRequestSchema,
+    GetOperationsQuerySchema,
+    GetOperationResponseSchema,
+    GetOperationsResponseSchema,
+    GetOperationReceiptResponseSchema,
+    GetOperationsSummaryQuerySchema,
+    GetOperationsSummaryResponseSchema,
+    MakeFeeOperationResponseSchema,
+    MakeTopUpOperationResponseSchema,
+    MakeCashbackOperationResponseSchema,
+    MakeTransferOperationResponseSchema,
+    MakePurchaseOperationResponseSchema,
+    MakeBillPaymentOperationResponseSchema,
+    MakeCashWithdrawalOperationResponseSchema
+)
 
 
-class OperationDict(TypedDict):
-    """
-    Описание операции
-    """
-    id: str
-    type: str
-    status: str
-    amount: float
-    cardId: str
-    category: str
-    createdAt: str
-    accountId: str
-
-class OperationReceiptDict(TypedDict):
-    """
-    Описание структуры чека
-    """
-    url: str
-    document: str
-
-class OperationsSummaryDict(TypedDict):
-    """
-    Структура детализации операции
-    """
-    spentAmount: float
-    receivedAmount: float
-    cashbackAmount: float
-
-
-class GetOperationsQueryDict(TypedDict):
-    """
-    Структура данных для получения списка операций пользователя.
-    """
-    accountId: str
-
-class GetOperationsResponseDict(TypedDict):
-    """
-    Описание структуры ответа на запрос операций по accountId
-    """
-    operations: list[OperationDict]
-
-
-
-class GetOperationsSummaryQueryDict(TypedDict):
-    """
-    Структура данных для получения списка операций пользователя.
-    """
-    accountId: str
-
-class GetOperationsSummaryResponseDict(TypedDict):
-    """
-    Структура ответа на запрос детализации операции
-    """
-    spentAmount: float
-    receivedAmount: float
-    cashbackAmount: float
-
-class GetOperationReceiptResponseDict(TypedDict):
-    """
-    Структура ответа на запрос чека по операции по operation_id
-    """
-    url: str
-    document: str
-
-class GetOperationResponseDict(TypedDict):
-    operation: list[OperationDict]
-
-class MakeFeeOperationResponseDict(TypedDict):
-    operation: list[OperationDict]
-
-class MakeTopUpOperationResponseDict(TypedDict):
-    operation: list[OperationDict]
-
-class MakeCashbackOperationResponseDict(TypedDict):
-    operation: list[OperationDict]
-
-class MakeTransferOperationResponseDict(TypedDict):
-    operation: list[OperationDict]
-
-class MakePurchaseOperationResponseDict(TypedDict):
-    operation: list[OperationDict]
-    category: str
-
-class MakeBillPaymentOperationResponseDict(TypedDict):
-    operation: list[OperationDict]
-
-class MakeCashWithdrawalOperationResponseDict(TypedDict):
-    operation: list[OperationDict]
-
-
-class BaseOperationRequestDict(TypedDict):
-    """
-    Общие поля запроса для POST-запросов на создание операций
-    """
-    status: str
-    amount: float
-    cardId: str
-    accountId: str
-
-class MakeFeeOperationRequestDict(BaseOperationRequestDict):
+class MakeFeeOperationRequestSchema(BaseOperationRequestSchema):
     """
     Структура данных для создания операции по списанию комиссии
     """
     pass
 
-class MakeTopUpOperationRequestDict(BaseOperationRequestDict):
+class MakeTopUpOperationRequestSchema(BaseOperationRequestSchema):
     """
     Структура данных для создания операции пополнения счета
     """
     pass
 
-class MakeCashbackOperationRequestDict(BaseOperationRequestDict):
+class MakeCashbackOperationRequestSchema(BaseOperationRequestSchema):
     """
     Структура данных для создания операции по начислению кэшбека
     """
     pass
 
-class MakeTransferOperationRequestDict(BaseOperationRequestDict):
+class MakeTransferOperationRequestSchema(BaseOperationRequestSchema):
     """
     Структура данных для создания операции по переводу д/с
     """
     pass
 
-class MakePurchaseOperationRequestDict(BaseOperationRequestDict):
+class MakePurchaseOperationRequestSchema(BaseOperationRequestSchema):
     """
     Структура данных для создания операции покупки
     """
     category: str
 
-class MakeBillPaymentOperationRequestDict(BaseOperationRequestDict):
+class MakeBillPaymentOperationRequestSchema(BaseOperationRequestSchema):
     """
     Структура данных для создания операции оплаты по счету
     """
     pass
 
-class MakeCashWithdrawalOperationRequestDict(BaseOperationRequestDict):
+class MakeCashWithdrawalOperationRequestSchema(BaseOperationRequestSchema):
     """
     Структура данных для создания операции снятия наличных средств
     """
@@ -171,147 +86,174 @@ class OperationsGatewayHTTPClient(HTTPClient):
         """
         return self.get(f"/api/v1/operations/operation-receipt/{operation_id}")
     
-    def get_operations_api(self, query: GetOperationsQueryDict) -> Response:
+    def get_operations_api(self, query: GetOperationsQuerySchema) -> Response:
         """
         Получение списка операций для определенного счета по accountId.
 
         :param query: Словарь с параметрами запроса
         :return Ответ от сервера (объект httpx.Response)
         """
-        return self.get("/api/v1/operations", params=query)
+        return self.get(
+            "/api/v1/operations", 
+            params=QueryParams(**query.model_dump(by_alias=True))
+        )
     
-    def get_operations_summary_api(self, query: GetOperationsSummaryQueryDict) -> Response:
+    def get_operations_summary_api(self, query: GetOperationsSummaryQuerySchema) -> Response:
         """
         Получение статистики по операциям для определенного счета по accountId.
 
         :param query: Словарь с параметрами запроса
         :return Ответ от сервера (объект httpx.Response)
         """
-        return self.get("/api/v1/operations/operations-summary", params=query)
+        return self.get(
+            "/api/v1/operations/operations-summary", 
+            params=QueryParams(**query.model_dump(by_alias=True))
+        )
     
-    def make_fee_operation_api(self, request: MakeFeeOperationRequestDict) -> Response:
+    def make_fee_operation_api(self, request: MakeFeeOperationRequestSchema) -> Response:
         """
         Выполняет POST-запрос для проведения операции по списанию комиссии.
 
         :param request: Словарь с данными, необходимыми для выполнения операции.
         :return Объект httpx.Response с результатом операции.
         """
-        return self.post("/api/v1/operations/make-fee-operation", json=request)
+        return self.post(
+            "/api/v1/operations/make-fee-operation", 
+            json=request.model_dump(by_alias=True)
+        )
     
-    def make_top_up_operation_api(self, request: MakeTopUpOperationRequestDict) -> Response:
+    def make_top_up_operation_api(self, request: MakeTopUpOperationRequestSchema) -> Response:
         """
         Выполняет POST-запрос для проведения операции по пополнению счета.
 
         :param request: Словарь с данными, необходимыми для выполнения операции.
         :return Объект httpx.Response с результатом операции.
         """
-        return self.post("/api/v1/operations/make-top-up-operation", json=request)
+        return self.post(
+            "/api/v1/operations/make-top-up-operation", 
+            json=request.model_dump(by_alias=True)
+        )
     
-    def make_cashback_operation_api(self, request: MakeCashbackOperationRequestDict) -> Response:
+    def make_cashback_operation_api(self, request: MakeCashbackOperationRequestSchema) -> Response:
         """
         Выполняет POST-запрос для проведения операции по начислению кэшбека.
 
         :param request: Словарь с данными, необходимыми для выполнения операции.
         :return Объект httpx.Response с результатом операции.
         """
-        return self.post("/api/v1/operations/make-cashback-operation", json=request)
+        return self.post(
+            "/api/v1/operations/make-cashback-operation", 
+            json=request.model_dump(by_alias=True)
+        )
     
-    def make_transfer_operation_api(self, request: MakeTransferOperationRequestDict) -> Response:
+    def make_transfer_operation_api(self, request: MakeTransferOperationRequestSchema) -> Response:
         """
         Выполняет POST-запрос для проведения операции по переводу д/с.
 
         :param request: Словарь с данными, необходимыми для выполнения операции.
         :return Объект httpx.Response с результатом операции.
         """
-        return self.post("/api/v1/operations/make-transfer-operation", json=request)
+        return self.post(
+            "/api/v1/operations/make-transfer-operation", 
+            json=request.model_dump(by_alias=True)
+        )
     
-    def make_purchase_operation_api(self, request: MakePurchaseOperationRequestDict) -> Response:
+    def make_purchase_operation_api(self, request: MakePurchaseOperationRequestSchema) -> Response:
         """
         Выполняет POST-запрос для проведения операции по списанию комиссии.
 
         :param request: Словарь с данными, необходимыми для проведения операции покупки.
         :return Объект httpx.Response с результатом операции.
         """
-        return self.post("/api/v1/operations/make-purchase-operation", json=request)
+        return self.post(
+            "/api/v1/operations/make-purchase-operation", 
+            json=request.model_dump(by_alias=True)
+        )
     
-    def make_bill_payment_operation_api(self, request: MakeBillPaymentOperationRequestDict) -> Response:
+    def make_bill_payment_operation_api(self, request: MakeBillPaymentOperationRequestSchema) -> Response:
         """
         Выполняет POST-запрос для проведения операции оплаты по счету.
 
         :param request: Словарь с данными, необходимыми для выполнения операции.
         :return Объект httpx.Response с результатом операции.
         """
-        return self.post("/api/v1/operations/make-bill-payment-operation", json=request)
+        return self.post(
+            "/api/v1/operations/make-bill-payment-operation", 
+            json=request.model_dump(by_alias=True)
+        )
     
-    def make_cash_withdrawal_operation_api(self, request: MakeCashWithdrawalOperationRequestDict) -> Response:
+    def make_cash_withdrawal_operation_api(self, request: MakeCashWithdrawalOperationRequestSchema) -> Response:
         """
         Выполняет POST-запрос для проведения операции снятия наличных средств.
 
         :param request: Словарь с данными, необходимыми для выполнения операции.
         :return Объект httpx.Response с результатом операции.
         """
-        return self.post("/api/v1/operations/make-cash-withdrawal-operation", json=request)
+        return self.post(
+            "/api/v1/operations/make-cash-withdrawal-operation", 
+            json=request.model_dump(by_alias=True)
+        )
     
-    def get_operations(self, account_id: str) -> GetOperationsResponseDict:
-        query = GetOperationsQueryDict(accountId=account_id)
-        response = self.get_operations_api(query)
-        return response.json()
+    def get_operations(self, account_id: str) -> GetOperationsResponseSchema:
+        query = GetOperationsQuerySchema(account_id=account_id)
+        response = self.get_operations_api(query=QueryParams(**query.model_dump(by_alias=True)))
+        return GetOperationsResponseSchema.model_validate_json(response.text)
     
-    def get_operations_summary(self, account_id: str) -> GetOperationsSummaryResponseDict:
-        query = GetOperationsSummaryQueryDict(accountId=account_id)
-        response = self.get_operations_summary_api(query)
-        return response.json()
+    def get_operations_summary(self, account_id: str) -> GetOperationsSummaryResponseSchema:
+        query = GetOperationsSummaryQuerySchema(account_id=account_id)
+        response = self.get_operations_summary_api(query=QueryParams(**query.model_dump(by_alias=True)))
+        return GetOperationsSummaryResponseSchema.model_validate_json(response.text)
     
-    def get_operation_receipt(self, account_id: str) -> GetOperationReceiptResponseDict:
+    def get_operation_receipt(self, account_id: str) -> GetOperationReceiptResponseSchema:
         response = self.get_operation_receipt_api(account_id)
-        return response.json()
+        return GetOperationReceiptResponseSchema.model_validate_json(response.text)
     
-    def get_operation(self, operation_id: str) -> GetOperationResponseDict:
+    def get_operation(self, operation_id: str) -> GetOperationResponseSchema:
         response = self.get_operation_api(operation_id)
-        return response.json()
+        return GetOperationResponseSchema.model_validate_json(response.text)
     
-    def make_fee_operation(self, card_id: str, account_id: str) -> MakeFeeOperationResponseDict:
-        request = MakeFeeOperationRequestDict(
+    def make_fee_operation(self, card_id: str, account_id: str) -> MakeFeeOperationResponseSchema:
+        request = MakeFeeOperationRequestSchema(
         status="COMPLETED",
         amount=55.77,
         cardId=card_id,
         accountId=account_id
     )
         response = self.make_fee_operation_api(request)
-        return response.json()
+        return MakeFeeOperationResponseSchema.model_validate_json(response.text)
     
-    def make_top_up_operation(self, card_id: str, account_id: str) -> MakeTopUpOperationResponseDict:
-        request = MakeTopUpOperationRequestDict(
+    def make_top_up_operation(self, card_id: str, account_id: str) -> MakeTopUpOperationResponseSchema:
+        request = MakeTopUpOperationRequestSchema(
         status="COMPLETED",
         amount=55.77,
         cardId=card_id,
         accountId=account_id
     )
         response = self.make_top_up_operation_api(request)
-        return response.json()
+        return MakeTopUpOperationResponseSchema.model_validate_json(response.text)
     
-    def make_cashback_operation(self, card_id: str, account_id: str) -> MakeCashbackOperationResponseDict:
-        request = MakeCashbackOperationRequestDict(
+    def make_cashback_operation(self, card_id: str, account_id: str) -> MakeCashbackOperationResponseSchema:
+        request = MakeCashbackOperationRequestSchema(
         status="COMPLETED",
         amount=55.77,
         cardId=card_id,
         accountId=account_id
     )
         response = self.make_cashback_operation_api(request)
-        return response.json()
+        return MakeCashbackOperationResponseSchema.model_validate_json(response.text)
     
-    def make_transfer_operation(self, card_id: str, account_id: str) -> MakeTransferOperationResponseDict:
-        request = MakeTransferOperationRequestDict(
+    def make_transfer_operation(self, card_id: str, account_id: str) -> MakeTransferOperationResponseSchema:
+        request = MakeTransferOperationRequestSchema(
         status="COMPLETED",
         amount=55.77,
         cardId=card_id,
         accountId=account_id
     )
         response = self.make_transfer_operation_api(request)
-        return response.json()
+        return MakeTransferOperationResponseSchema.model_validate_json(response.text)
     
-    def make_purchase_operation(self, card_id: str, account_id: str) -> MakePurchaseOperationResponseDict:
-        request = MakePurchaseOperationRequestDict(
+    def make_purchase_operation(self, card_id: str, account_id: str) -> MakePurchaseOperationResponseSchema:
+        request = MakePurchaseOperationRequestSchema(
         status="COMPLETED",
         amount=55.77,
         cardId=card_id,
@@ -319,27 +261,27 @@ class OperationsGatewayHTTPClient(HTTPClient):
         category="taxi"
     )
         response = self.make_purchase_operation_api(request)
-        return response.json()
+        return MakePurchaseOperationResponseSchema.model_validate_json(response.text)
     
-    def make_bill_payment_operation(self, card_id: str, account_id: str) -> MakeBillPaymentOperationResponseDict:
-        request = MakeBillPaymentOperationRequestDict(
+    def make_bill_payment_operation(self, card_id: str, account_id: str) -> MakeBillPaymentOperationResponseSchema:
+        request = MakeBillPaymentOperationRequestSchema(
         status="COMPLETED",
         amount=55.77,
         cardId=card_id,
         accountId=account_id
     )
         response = self.make_bill_payment_operation_api(request)
-        return response.json()
+        return MakeBillPaymentOperationResponseSchema.model_validate_json(response.text)
     
-    def make_cash_withdrawal_operation(self, card_id: str, account_id: str) -> MakeCashWithdrawalOperationResponseDict:
-        request = MakeCashWithdrawalOperationRequestDict(
+    def make_cash_withdrawal_operation(self, card_id: str, account_id: str) -> MakeCashWithdrawalOperationResponseSchema:
+        request = MakeCashWithdrawalOperationRequestSchema(
         status="COMPLETED",
         amount=55.77,
         cardId=card_id,
         accountId=account_id
     )
         response = self.make_cash_withdrawal_operation_api(request)
-        return response.json()
+        return MakeCashWithdrawalOperationResponseSchema.model_validate_json(response.text)
 
 
 def build_operations_gateway_http_client() -> OperationsGatewayHTTPClient:
