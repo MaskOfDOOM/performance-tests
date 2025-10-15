@@ -93,30 +93,7 @@ class GetOperationResponseSchema(BaseModel):
     """
     operation: OperationSchema
 
-class MakeFeeOperationResponseSchema(BaseModel):
-    operation: OperationSchema
-
-class MakeTopUpOperationResponseSchema(BaseModel):
-    operation: OperationSchema
-
-class MakeCashbackOperationResponseSchema(BaseModel):
-    operation: OperationSchema
-
-class MakeTransferOperationResponseSchema(BaseModel):
-    operation: OperationSchema
-
-class MakePurchaseOperationResponseSchema(BaseModel):
-    operation: OperationSchema
-    category: str
-
-class MakeBillPaymentOperationResponseSchema(BaseModel):
-    operation: OperationSchema
-
-class MakeCashWithdrawalOperationResponseSchema(BaseModel):
-    operation: OperationSchema
-
-
-class BaseOperationRequestSchema(BaseModel):
+class MakeOperationRequestSchema(BaseModel):
     model_config = ConfigDict(populate_by_name=True)
 
     """
@@ -126,3 +103,67 @@ class BaseOperationRequestSchema(BaseModel):
     amount: float
     card_id: str = Field(alias="cardId")
     account_id: str = Field(alias="accountId")
+
+class MakeFeeOperationRequestSchema(MakeOperationRequestSchema):
+    """
+    Структура запроса для создания операции комиссии.
+    """
+    pass
+
+class MakeFeeOperationResponseSchema(BaseModel):
+    operation: OperationSchema
+
+class MakeTopUpOperationRequestSchema(MakeOperationRequestSchema):
+    """
+    Структура запроса для создания операции комиссии.
+    """
+    pass
+
+class MakeTopUpOperationResponseSchema(BaseModel):
+    operation: OperationSchema
+
+class MakeCashbackOperationRequestSchema(MakeOperationRequestSchema):
+    """
+    Структура запроса для создания операции комиссии.
+    """
+    pass
+
+class MakeCashbackOperationResponseSchema(BaseModel):
+    operation: OperationSchema
+
+class MakeTransferOperationRequestSchema(MakeOperationRequestSchema):
+    """
+    Структура запроса для создания операции комиссии.
+    """
+    pass
+
+class MakeTransferOperationResponseSchema(BaseModel):
+    operation: OperationSchema
+
+class MakePurchaseOperationRequestSchema(MakeOperationRequestSchema):
+    """
+    Структура запроса для создания операции комиссии.
+    """
+    pass
+
+class MakePurchaseOperationResponseSchema(BaseModel):
+    operation: OperationSchema
+    category: str
+
+class MakeBillPaymentOperationRequestSchema(MakeOperationRequestSchema):
+    """
+    Структура запроса для создания операции комиссии.
+    """
+    pass
+
+class MakeBillPaymentOperationResponseSchema(BaseModel):
+    operation: OperationSchema
+
+class MakeCashWithdrawalOperationRequestSchema(MakeOperationRequestSchema):
+    """
+    Структура запроса для создания операции комиссии.
+    """
+    pass
+
+class MakeCashWithdrawalOperationResponseSchema(BaseModel):
+    operation: OperationSchema
