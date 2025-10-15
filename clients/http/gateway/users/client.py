@@ -1,7 +1,6 @@
 import time
 from clients.http.client import HTTPClient
 from httpx import Response
-from typing import TypedDict
 from clients.http.gateway.client import build_gateway_http_client
 from clients.http.gateway.users.schema import (
     GetUserResponseSchema,
