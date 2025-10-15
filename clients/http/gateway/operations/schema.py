@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field, ConfigDict
+from pydantic import BaseModel, Field, ConfigDict, HttpUrl
 from enum import StrEnum
 
 
@@ -35,7 +35,7 @@ class OperationReceiptSchema(BaseModel):
     """
     Описание структуры чека
     """
-    url: str
+    url: HttpUrl
     document: str
 
 class OperationsSummarySchema(BaseModel):
@@ -77,20 +77,20 @@ class GetOperationsSummaryResponseSchema(BaseModel):
     model_config = ConfigDict(populate_by_name=True)
 
     """
-    Структура ответа на запрос детализации операции
+    Описание структуры ответа получения статистики по операциям.
     """
-    spent_amount: float = Field(alias="spentAmount")
-    received_amount: float = Field(alias="receivedAmount")
-    cashback_amount: float = Field(alias="cashbackAmount")
+    summary: OperationsSummarySchema
 
 class GetOperationReceiptResponseSchema(BaseModel):
     """
     Структура ответа на запрос чека по операции по operation_id
     """
-    url: str
-    document: str
+    receipt: OperationReceiptSchema
 
 class GetOperationResponseSchema(BaseModel):
+    """
+    Описание структуры ответа получения операции.
+    """
     operation: OperationSchema
 
 class MakeFeeOperationResponseSchema(BaseModel):
@@ -122,7 +122,7 @@ class BaseOperationRequestSchema(BaseModel):
     """
     Общие поля запроса для POST-запросов на создание операций
     """
-    status: str
+    status: OperationStatus
     amount: float
     card_id: str = Field(alias="cardId")
     account_id: str = Field(alias="accountId")

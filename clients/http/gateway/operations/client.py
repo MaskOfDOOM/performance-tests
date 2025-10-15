@@ -2,66 +2,28 @@ from clients.http.client import HTTPClient
 from httpx import QueryParams, Response
 from clients.http.gateway.client import build_gateway_http_client
 from clients.http.gateway.operations.schema import (
-    BaseOperationRequestSchema,
-    GetOperationsQuerySchema,
+    OperationStatus,
     GetOperationResponseSchema,
-    GetOperationsResponseSchema,
     GetOperationReceiptResponseSchema,
+    GetOperationsQuerySchema,
+    GetOperationsResponseSchema,
     GetOperationsSummaryQuerySchema,
     GetOperationsSummaryResponseSchema,
+    MakeFeeOperationRequestSchema,
     MakeFeeOperationResponseSchema,
+    MakeTopUpOperationRequestSchema,
     MakeTopUpOperationResponseSchema,
+    MakeCashbackOperationRequestSchema,
     MakeCashbackOperationResponseSchema,
+    MakeTransferOperationRequestSchema,
     MakeTransferOperationResponseSchema,
+    MakePurchaseOperationRequestSchema,
     MakePurchaseOperationResponseSchema,
+    MakeBillPaymentOperationRequestSchema,
     MakeBillPaymentOperationResponseSchema,
+    MakeCashWithdrawalOperationRequestSchema,
     MakeCashWithdrawalOperationResponseSchema
 )
-
-
-class MakeFeeOperationRequestSchema(BaseOperationRequestSchema):
-    """
-    Структура данных для создания операции по списанию комиссии
-    """
-    pass
-
-class MakeTopUpOperationRequestSchema(BaseOperationRequestSchema):
-    """
-    Структура данных для создания операции пополнения счета
-    """
-    pass
-
-class MakeCashbackOperationRequestSchema(BaseOperationRequestSchema):
-    """
-    Структура данных для создания операции по начислению кэшбека
-    """
-    pass
-
-class MakeTransferOperationRequestSchema(BaseOperationRequestSchema):
-    """
-    Структура данных для создания операции по переводу д/с
-    """
-    pass
-
-class MakePurchaseOperationRequestSchema(BaseOperationRequestSchema):
-    """
-    Структура данных для создания операции покупки
-    """
-    category: str
-
-class MakeBillPaymentOperationRequestSchema(BaseOperationRequestSchema):
-    """
-    Структура данных для создания операции оплаты по счету
-    """
-    pass
-
-class MakeCashWithdrawalOperationRequestSchema(BaseOperationRequestSchema):
-    """
-    Структура данных для создания операции снятия наличных средств
-    """
-    pass    
-
-
 
 class OperationsGatewayHTTPClient(HTTPClient):
     """
@@ -196,12 +158,12 @@ class OperationsGatewayHTTPClient(HTTPClient):
     
     def get_operations(self, account_id: str) -> GetOperationsResponseSchema:
         query = GetOperationsQuerySchema(account_id=account_id)
-        response = self.get_operations_api(query=QueryParams(**query.model_dump(by_alias=True)))
+        response = self.get_operations_api(query)
         return GetOperationsResponseSchema.model_validate_json(response.text)
     
     def get_operations_summary(self, account_id: str) -> GetOperationsSummaryResponseSchema:
         query = GetOperationsSummaryQuerySchema(account_id=account_id)
-        response = self.get_operations_summary_api(query=QueryParams(**query.model_dump(by_alias=True)))
+        response = self.get_operations_summary_api(query)
         return GetOperationsSummaryResponseSchema.model_validate_json(response.text)
     
     def get_operation_receipt(self, account_id: str) -> GetOperationReceiptResponseSchema:
