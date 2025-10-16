@@ -110,9 +110,3 @@ class Fake:
         return self.float(1, 1000)
 
 fake = Fake(faker=Faker())
-
-
-print(fake.email())
-print(fake.amount())
-print(fake.category())
-print(fake.phone_number())
