@@ -1,5 +1,6 @@
 from pydantic import BaseModel, Field, ConfigDict, HttpUrl
 from enum import StrEnum
+from tools.fakers import fake
 
 
 class OperationType(StrEnum):
@@ -99,8 +100,8 @@ class MakeOperationRequestSchema(BaseModel):
     """
     Общие поля запроса для POST-запросов на создание операций
     """
-    status: OperationStatus
-    amount: float
+    status: OperationStatus = Field(default_factory=lambda: fake.enum(OperationStatus))
+    amount: float = Field(default_factory=fake.amount)
     card_id: str = Field(alias="cardId")
     account_id: str = Field(alias="accountId")
 
@@ -144,11 +145,11 @@ class MakePurchaseOperationRequestSchema(MakeOperationRequestSchema):
     """
     Структура запроса для создания операции комиссии.
     """
-    pass
+    category: str = Field(default_factory=fake.category)
 
 class MakePurchaseOperationResponseSchema(BaseModel):
     operation: OperationSchema
-    category: str
+    
 
 class MakeBillPaymentOperationRequestSchema(MakeOperationRequestSchema):
     """

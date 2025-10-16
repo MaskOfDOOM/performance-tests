@@ -1,4 +1,3 @@
-import time
 from clients.http.client import HTTPClient
 from httpx import Response
 from clients.http.gateway.client import build_gateway_http_client
