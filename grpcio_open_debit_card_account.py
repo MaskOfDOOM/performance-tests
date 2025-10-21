@@ -34,7 +34,7 @@ account_gateway_service = AccountsGatewayServiceStub(channel)
 open_debit_card_account_request = OpenDebitCardAccountRequest(
     user_id=create_user_response.user.id
 )
-open_debit_card_account_response = OpenDebitCardAccountResponse = (
+open_debit_card_account_response: OpenDebitCardAccountResponse = (
     account_gateway_service.OpenDebitCardAccount(open_debit_card_account_request)
 )
 print('Open debit card account response:', open_debit_card_account_response)
