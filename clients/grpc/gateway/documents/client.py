@@ -54,7 +54,7 @@ class DocumentsGatewayGRPCClient(GRPCClient):
         request = GetContractDocumentRequest(account_id=account_id)
         return self.get_contract_document_api(request)
     
-def build_cards_gateway_grpc_client() -> DocumentsGatewayGRPCClient:
+def build_documents_gateway_grpc_client() -> DocumentsGatewayGRPCClient:
     """
     Фабрика для создания экземпляра DocumentsGatewayGRPCClient.
 
