@@ -16,7 +16,7 @@ from contracts.services.gateway.cards.cards_gateway_service_pb2_grpc import Card
 class CardsGatewayGRPCClient(GRPCClient):
     """
     gRPC-клиент для взаимодействия с CardsGatewayService.
-    Предоставляет высокоуровневые методы для получения и создания пользователей.
+    Предоставляет высокоуровневые методы для создания карт.
     """
 
     def __init__(self, channel: Channel):
