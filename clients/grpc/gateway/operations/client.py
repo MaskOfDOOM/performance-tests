@@ -113,7 +113,7 @@ class OperationsGatewayGRPCClient(GRPCClient):
     
     def make_top_up_operation_api(self, request: MakeTopUpOperationRequest) -> MakeTopUpOperationResponse:
         """
-        Низкоуровневый вызов метода MakeFeeOperation через gRPC.
+        Низкоуровневый вызов метода MakeTopUpOperation через gRPC.
 
         :param request: gRPC-запрос на создание операции пополнения счёта.
         :return: Ответ от сервера с инф-ей о совершённой операции.
@@ -122,7 +122,7 @@ class OperationsGatewayGRPCClient(GRPCClient):
     
     def make_cashback_operation_api(self, request: MakeCashbackOperationRequest) -> MakeCashbackOperationResponse:
         """
-        Низкоуровневый вызов метода MakeFeeOperation через gRPC.
+        Низкоуровневый вызов метода MakeCashbackOperation через gRPC.
 
         :param request: gRPC-запрос на создание операции начисления кэшбека.
         :return: Ответ от сервера с инф-ей о совершённой операции.
@@ -131,7 +131,7 @@ class OperationsGatewayGRPCClient(GRPCClient):
     
     def make_transfer_operation_api(self, request: MakeTransferOperationRequest) -> MakeTransferOperationResponse:
         """
-        Низкоуровневый вызов метода MakeFeeOperation через gRPC.
+        Низкоуровневый вызов метода MakeTransferOperation через gRPC.
 
         :param request: gRPC-запрос на создание операции перевода д\с.
         :return: Ответ от сервера с инф-ей о совершённой операции.
@@ -140,7 +140,7 @@ class OperationsGatewayGRPCClient(GRPCClient):
     
     def make_purchase_operation_api(self, request: MakePurchaseOperationRequest) -> MakePurchaseOperationResponse:
         """
-        Низкоуровневый вызов метода MakeFeeOperation через gRPC.
+        Низкоуровневый вызов метода MakePurchaseOperation через gRPC.
 
         :param request: gRPC-запрос на создание операции покупки.
         :return: Ответ от сервера с инф-ей о совершённой операции.
@@ -149,7 +149,7 @@ class OperationsGatewayGRPCClient(GRPCClient):
     
     def make_bill_payment_operation_api(self, request: MakeBillPaymentOperationRequest) -> MakeBillPaymentOperationResponse:
         """
-        Низкоуровневый вызов метода MakeFeeOperation через gRPC.
+        Низкоуровневый вызов метода MakeBillPaymentOperation через gRPC.
 
         :param request: gRPC-запрос на создание операции оплаты по счёту.
         :return: Ответ от сервера с инф-ей о совершённой операции.
@@ -158,7 +158,7 @@ class OperationsGatewayGRPCClient(GRPCClient):
     
     def make_cash_withdrawal_operation_api(self, request: MakeCashWithdrawalOperationRequest) -> MakeCashWithdrawalOperationResponse:
         """
-        Низкоуровневый вызов метода MakeFeeOperation через gRPC.
+        Низкоуровневый вызов метода MakeCashWithdrawalOperation через gRPC.
 
         :param request: gRPC-запрос на создание операции снятия наличных д\с.
         :return: Ответ от сервера с инф-ей о совершённой операции.
@@ -185,43 +185,43 @@ class OperationsGatewayGRPCClient(GRPCClient):
     def make_fee_operation(self, card_id: str, account_id: str) -> MakeFeeOperationResponse:
         request = MakeFeeOperationRequest(
             status=fake.proto_enum(OperationStatus),
-            amount=fake.amount,
+            amount=fake.amount(),
             card_id=card_id,
             account_id=account_id
         )
         return self.make_fee_operation_api(request)
     
     def make_top_up_operation(self, card_id: str, account_id: str) -> MakeTopUpOperationResponse:
-        request = MakeFeeOperationRequest(
+        request = MakeTopUpOperationRequest(
             status=fake.proto_enum(OperationStatus),
-            amount=fake.amount,
+            amount=fake.amount(),
             card_id=card_id,
             account_id=account_id
         )
         return self.make_top_up_operation_api(request)
     
     def make_cashback_operation(self, card_id: str, account_id: str) -> MakeCashbackOperationResponse:
-        request = MakeFeeOperationRequest(
+        request = MakeCashbackOperationRequest(
             status=fake.proto_enum(OperationStatus),
-            amount=fake.amount,
+            amount=fake.amount(),
             card_id=card_id,
             account_id=account_id
         )
         return self.make_cashback_operation_api(request)
     
     def make_transfer_operation(self, card_id: str, account_id: str) -> MakeTransferOperationResponse:
-        request = MakeFeeOperationRequest(
+        request = MakeTransferOperationRequest(
             status=fake.proto_enum(OperationStatus),
-            amount=fake.amount,
+            amount=fake.amount(),
             card_id=card_id,
             account_id=account_id
         )
         return self.make_transfer_operation_api(request)
     
     def make_purchase_operation(self, card_id: str, account_id: str) -> MakePurchaseOperationResponse:
-        request = MakeFeeOperationRequest(
+        request = MakePurchaseOperationRequest(
             status=fake.proto_enum(OperationStatus),
-            amount=fake.amount,
+            amount=fake.amount(),
             card_id=card_id,
             category=fake.category,
             account_id=account_id
@@ -229,18 +229,18 @@ class OperationsGatewayGRPCClient(GRPCClient):
         return self.make_purchase_operation_api(request)
     
     def make_bill_payment_operation(self, card_id: str, account_id: str) -> MakeBillPaymentOperationResponse:
-        request = MakeFeeOperationRequest(
+        request = MakeBillPaymentOperationRequest(
             status=fake.proto_enum(OperationStatus),
-            amount=fake.amount,
+            amount=fake.amount(),
             card_id=card_id,
             account_id=account_id
         )
         return self.make_bill_payment_operation_api(request)
     
     def make_cash_withdrawal_operation(self, card_id: str, account_id: str) -> MakeCashWithdrawalOperationResponse:
-        request = MakeFeeOperationRequest(
+        request = MakeCashWithdrawalOperationRequest(
             status=fake.proto_enum(OperationStatus),
-            amount=fake.amount,
+            amount=fake.amount(),
             card_id=card_id,
             account_id=account_id
         )
