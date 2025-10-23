@@ -57,7 +57,7 @@ class UsersGatewayGRPCClient(GRPCClient):
         :return: Ответ с информацией о пользователе.
         """
         request = GetUserRequest(id=user_id)
-        return self.get.get_user_api(request)
+        return self.get_user_api(request)
 
     def create_user(self) -> CreateUserResponse:
         """
@@ -70,7 +70,7 @@ class UsersGatewayGRPCClient(GRPCClient):
             last_name=fake.last_name(),
             first_name=fake.first_name(),
             middle_name=fake.middle_name(),
-            phone_number=fake.phone_number
+            phone_number=fake.phone_number()
         )
         return self.create_user_api(request)
     
