@@ -7,7 +7,7 @@ class BasicScenarioUser(HttpUser):
 
     @task(2)
     def get_data(self):
-        self.client.get("/#auth/login")
+        self.client.get("/get")
 
     @task(1)
     def post_data(self):
