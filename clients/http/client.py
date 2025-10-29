@@ -17,7 +17,7 @@ class HTTPClient:
         self.client = client
 
     def get(
-            self, url: URL | str,
+            self, url: str | URL,
             params: QueryParams | None = None,
             extensions: HTTPClientExtensions | None = None
     ) -> Response:
@@ -29,10 +29,11 @@ class HTTPClient:
         :param extensions: Дополнительные данные, передаваемые через HTTPX extensions
         :return Объект Response с данными ответа.
         """
-        return self.client.get(url, params=params, extensions=extensions)
+        return self.client.get(url=url, params=params, extensions=extensions)
     
     def post(
-            self, url: URL | str,
+            self,
+            url: str | URL,
             json: Any | None = None,
             extensions: HTTPClientExtensions | None = None
 
@@ -45,4 +46,4 @@ class HTTPClient:
         :param extensions: Дополнительные данные, передаваемые через HTTPX extensions
         :return Объект Response с данными ответа.        
         """
-        return self.client.post(url, json=json, extensions=extensions) 
+        return self.client.post(url=url, json=json, extensions=extensions) 
