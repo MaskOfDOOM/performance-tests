@@ -88,8 +88,12 @@ def build_users_gateway_grpc_client() -> UsersGatewayGRPCClient:
 
 def build_users_gateway_locust_grpc_client(environment: Environment) -> UsersGatewayGRPCClient:
     """
-    Фабрика для создания экземпляра UsersGatewayGRPCClient.
+    Функция создаёт экземпляр UsersGatewayGRPCClient, адаптированного под Locust.
 
-    :return: Инициализированный клиент для UsersGatewayService.
+    Клиент автоматически собирает метрики и передаёт их в Locust через хуки.
+    Используется только в нагрузочных тестах.
+
+    :param environment: объект окружения Locust.
+    :return: экземпляр UsersGatewayGRPCClient с хуками сбора метрик.
     """
     return UsersGatewayGRPCClient(channel=build_gateway_locust_grpc_client(environment))
