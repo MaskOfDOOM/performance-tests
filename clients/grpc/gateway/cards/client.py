@@ -1,7 +1,8 @@
 from grpc import Channel
 
 from clients.grpc.client import GRPCClient
-from clients.grpc.gateway.client import build_gateway_grpc_client
+from locust.env import Environment
+from clients.grpc.gateway.client import build_gateway_grpc_client, build_gateway_locust_grpc_client
 from contracts.services.gateway.cards.rpc_issue_virtual_card_pb2 import (
     IssueVirtualCardRequest,
     IssueVirtualCardResponse
@@ -77,4 +78,8 @@ def build_cards_gateway_grpc_client() -> CardsGatewayGRPCClient:
     :return: Инициализированный клиент для CardsGatewayService.
     """
     return CardsGatewayGRPCClient(channel=build_gateway_grpc_client())
+
+
+def build_cards_gateway_locust_grpc_client(environment: Environment) -> CardsGatewayGRPCClient:
+    return CardsGatewayGRPCClient(channel=build_gateway_locust_grpc_client(environment))
 
