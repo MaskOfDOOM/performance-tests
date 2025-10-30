@@ -51,7 +51,7 @@ class GetDocumentsSequentialTaskSet(GatewayHTTPSequentialTaskSet):
         )
 
 
-class GetDocumentsUser(User):
+class GetDocumentsScenarioUser(User):
     """
     Пользователь Locust, исполняющий последовательный сценарий получения документов.
     """
