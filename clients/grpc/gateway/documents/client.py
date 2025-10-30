@@ -47,7 +47,7 @@ class DocumentsGatewayGRPCClient(GRPCClient):
         """
         return self.stub.GetContractDocument(request)
     
-    def get_tariff_document(self, account_id: str) -> GetContractDocumentResponse:
+    def get_tariff_document(self, account_id: str) -> GetTariffDocumentResponse:
         request = GetTariffDocumentRequest(account_id=account_id)
         return self.get_tariff_document_api(request)
     
