@@ -1,22 +1,22 @@
 from seeds.scenario import SeedsScenario
 from seeds.schema.plan import SeedAccountsPlan, SeedUsersPlan, SeedsPlan
 
-class ExistingUserGetDocumentsSeedsScenario(SeedsScenario):
+
+class ExistingUserIssueVirtualCardSeedsScenario(SeedsScenario):
     """
-    Сценарий сидинга для существующего пользователя, который просматривает свои счета и документы.
-    Создаём 100 пользователей, каждому из которых открываются депозитный и сберегательный счёт.
+    Сценарий сидинга для существующего пользователя, который выпускает виртуальную карту.
+    Создаём 300 пользователей, каждому из которых открываются дебетовый счёт.
     """
     @property
     def plan(self) -> SeedsPlan:
         """
         Возвращает план сидинга для создания пользователей и их счетов.
-        Мы создаём 100 пользователей, каждый получит депозитный и сберегательный счёт.
+        Мы создаём 300 пользователей, каждый получит дебетовый счет.
         """
         return SeedsPlan(
             users=SeedUsersPlan(
-                count=100,
-                savings_accounts=SeedAccountsPlan(count=1),
-                deposit_accounts=SeedAccountsPlan(count=1)
+                count=300,
+                debit_card_accounts=SeedAccountsPlan(count=1)
             )
         )
     @property
@@ -25,12 +25,12 @@ class ExistingUserGetDocumentsSeedsScenario(SeedsScenario):
         Возвращает название сценария сидинга.
         Это имя будет использоваться для сохранения данных сидинга.
         """
-        return "existing_user_get_documents"
+        return "existing_user_issue_virtual_card"
     
 if __name__ == '__main__':
     """
     Запуск сценария сидинга вручную.
     Создаём объект сценария и вызываем метод build для создания данных.
     """
-    seeds_scenario = ExistingUserGetDocumentsSeedsScenario()
+    seeds_scenario = ExistingUserIssueVirtualCardSeedsScenario()
     seeds_scenario.build()
