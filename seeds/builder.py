@@ -57,14 +57,24 @@ class SeedsBuilder:
             user_id=user_id,
             account_id=account_id
         )
-        return SeedCardResult(card=response.card.id)
+        return SeedCardResult(card_id=response.card.id)
     
     def build_virtual_card_result(self, user_id: str, account_id: str) -> SeedCardResult:
+        """
+        Выпускает виртуальную карту для заданного пользователя и счёта.
+
+        Args:
+            user_id: Идентификатор пользователя
+            account_id: Идентификатор счёта
+
+        Returns:
+            SeedCardResult: Результат с ID выпущенной карты
+        """
         response = self.cards_gateway_client.issue_virtual_card(
             user_id=user_id,
             account_id=account_id
         )
-        return SeedCardResult(card=response.card.id)
+        return SeedCardResult(card_id=response.card.id)
 
     
     def build_top_up_operation_result(self, card_id: str, account_id: str) -> SeedOperationResult:
@@ -188,11 +198,11 @@ class SeedsBuilder:
         return SeedAccountResult(
             account_id=response.account.id,
             physical_cards=[
-                self.build_physical_card_result(user_id, account_id)
+                self.build_physical_card_result(user_id=user_id, account_id=response.account.id)
                 for _ in range(plan.physical_cards.count)
             ],
             virtual_cards=[
-                self.build_virtual_card_result(user_id, account_id)
+                self.build_virtual_card_result(user_id=user_id, account_id=response.account.id)
                 for _ in range(plan.virtual_cards.count)
             ],
             top_up_operations=[
@@ -217,6 +227,7 @@ class SeedsBuilder:
         """
         Открывает кредитный счёт и выполняет действия согласно плану:
         - выпускает физические карты
+        - выпускает виртуальные карты
         - выполняет операции пополнения (top-up)
         - выполняет операции покупки
 
@@ -234,11 +245,11 @@ class SeedsBuilder:
         return SeedAccountResult(
             account_id=response.account.id,
             physical_cards=[
-                self.build_physical_card_result(user_id, account_id)
+                self.build_physical_card_result(user_id=user_id, account_id=account_id)
                 for _ in range(plan.physical_cards.count)
             ],
             virtual_cards=[
-                self.build_virtual_card_result(user_id, account_id)
+                self.build_virtual_card_result(user_id=user_id, account_id=account_id)
                 for _ in range(plan.virtual_cards.count)
             ],
             top_up_operations=[
@@ -279,7 +290,7 @@ class SeedsBuilder:
                 self.build_debit_card_account_result(plan=plan.debit_card_accounts, user_id=response.user.id) 
                 for _ in range(plan.debit_card_accounts.count)],
             credit_card_accounts=[
-                self.build_credit_card_account_result(plan=plan.debit_card_accounts, user_id=response.user.id)
+                self.build_credit_card_account_result(plan=plan.credit_card_accounts, user_id=response.user.id)
                 for _ in range(plan.credit_card_accounts.count)]
         )
 

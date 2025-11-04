@@ -23,7 +23,7 @@ class ExistingUserMakePurchaseOperationSeedsScenario(SeedsScenario):
                     count=1, # Количество счетов на пользователя
                     physical_cards=SeedCardsPlan(count=1) # Количество физических карт
                 )
-            )
+            ),
         )
     
     @property
