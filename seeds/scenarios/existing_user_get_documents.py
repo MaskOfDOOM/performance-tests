@@ -16,7 +16,8 @@ class ExistingUserGetDocumentsSeedsScenario(SeedsScenario):
             users=SeedUsersPlan(
                 count=100,
                 savings_accounts=SeedAccountsPlan(count=1),
-                deposit_accounts=SeedAccountsPlan(count=1)
+                deposit_accounts=SeedAccountsPlan(count=1),
+                debit_card_accounts=SeedAccountsPlan(count=1)
             )
         )
     @property

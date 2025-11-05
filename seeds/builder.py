@@ -14,7 +14,7 @@ from seeds.schema.plan import (
 from seeds.schema.result import (
     SeedAccountResult, 
     SeedCardResult, 
-    SeedOperationResult, 
+    SeedOperationResult,
     SeedUserResult, 
     SeedsResult
 )
@@ -288,10 +288,12 @@ class SeedsBuilder:
             ],
             debit_card_accounts=[
                 self.build_debit_card_account_result(plan=plan.debit_card_accounts, user_id=response.user.id) 
-                for _ in range(plan.debit_card_accounts.count)],
+                for _ in range(plan.debit_card_accounts.count)
+            ],
             credit_card_accounts=[
                 self.build_credit_card_account_result(plan=plan.credit_card_accounts, user_id=response.user.id)
-                for _ in range(plan.credit_card_accounts.count)]
+                for _ in range(plan.credit_card_accounts.count)
+            ]
         )
 
 
@@ -307,7 +309,7 @@ class SeedsBuilder:
         Returns:
             SeedsResult: Результат с данными всех созданных пользователей
         """
-        return SeedsResult(users=[self.build_user(plan.users) for _ in range(plan.users.count)])
+        return SeedsResult(users=[self.build_user(plan=plan.users) for _ in range(plan.users.count)])
     
 
 def build_grpc_seeds_builder() -> SeedsBuilder:
