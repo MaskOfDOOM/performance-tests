@@ -1,5 +1,5 @@
 from seeds.scenario import SeedsScenario
-from seeds.schema.plan import SeedAccountsPlan, SeedUsersPlan, SeedsPlan
+from seeds.schema.plan import SeedAccountsPlan, SeedCardsPlan, SeedUsersPlan, SeedsPlan
 
 
 class ExistingUserIssueVirtualCardSeedsScenario(SeedsScenario):
@@ -16,8 +16,11 @@ class ExistingUserIssueVirtualCardSeedsScenario(SeedsScenario):
         return SeedsPlan(
             users=SeedUsersPlan(
                 count=300,
-                debit_card_accounts=SeedAccountsPlan(count=1)
-            )
+                debit_card_accounts=SeedAccountsPlan(
+                    count=1,
+                    virtual_cards=SeedCardsPlan(count=1)
+                )                
+            ),
         )
     @property
     def scenario(self) -> str:
