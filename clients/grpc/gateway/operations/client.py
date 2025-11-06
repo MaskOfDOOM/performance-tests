@@ -168,7 +168,7 @@ class OperationsGatewayGRPCClient(GRPCClient):
     
 
     def get_operation(self, operation_id: str) -> GetOperationResponse:
-        request = GetOperationRequest(operation_id=operation_id)
+        request = GetOperationRequest(id=operation_id)
         return self.get_operation_api(request)
     
     def get_operation_receipt(self, operation_id: str) -> GetOperationReceiptResponse:
