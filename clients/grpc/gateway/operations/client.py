@@ -2,7 +2,7 @@ from clients.grpc.client import GRPCClient
 from grpc import Channel
 from locust.env import Environment
 from clients.grpc.gateway.client import build_gateway_grpc_client, build_gateway_locust_grpc_client
-from contracts.services.operations.operation_pb2 import OperationStatus, OperationType
+from contracts.services.operations.operation_pb2 import OperationStatus
 from tools.fakers import fake
 from contracts.services.gateway.operations.operations_gateway_service_pb2_grpc import OperationsGatewayServiceStub
 from contracts.services.gateway.operations.rpc_get_operation_pb2 import (
@@ -224,7 +224,7 @@ class OperationsGatewayGRPCClient(GRPCClient):
             status=fake.proto_enum(OperationStatus),
             amount=fake.amount(),
             card_id=card_id,
-            category=fake.category,
+            category=fake.category(),
             account_id=account_id
         )
         return self.make_purchase_operation_api(request)
