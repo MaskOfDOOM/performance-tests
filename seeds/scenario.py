@@ -55,7 +55,7 @@ class SeedsScenario(ABC):
         :return: Объект SeedsResult, содержащий данные, загруженные из файла.
         """
         logger.info(f"[{self.scenario}] Loading seeding from file.")
-        result =  load_seeds_result(scenario=self.scenario)
+        result = load_seeds_result(scenario=self.scenario)
         logger.info(f"[{self.scenario}] Seeding result loaded successfully")
         return result
     
