@@ -89,7 +89,6 @@ jobs:
           path: ./reports
 
       - name: Deploy HTML report to GitHub Pages
-        if: always()
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
