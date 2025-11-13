@@ -70,7 +70,7 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           keep_files: true
           publish_dir: reports
-          publisg_branch: gh-pages
+          publish_branch: gh-pages
 
       - name: Stop test services
         if: always()
