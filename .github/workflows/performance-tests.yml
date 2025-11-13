@@ -58,7 +58,7 @@ jobs:
           pip install -r requirements.txt
 
       - name: Create report directory
-        run: mkdir -p .reports/${{ github.run_id }}
+        run: mkdir -p ./reports/${{ github.run_id }}
 
       - name: Run load tests and generate HTML report
         run: locust --config=${{ github.event.inputs.SCENARIO }} --html=./reports/${{ github.run_id }}/index.html
