@@ -1,65 +1,25 @@
-import os
-
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
-from libs.config.grpc import GRPCServerConfig, GRPCClientConfig
-from libs.config.http import HTTPServerConfig, HTTPClientConfig
-from libs.config.kafka import KafkaClientConfig
-from libs.config.postgres import PostgresConfig
-from libs.config.redis import RedisClientConfig
-from libs.config.s3 import S3ClientConfig
+# Импортируем вложенные модели
+from tools.config.grpc import GRPCClientConfig
+from tools.config.http import HTTPClientConfig
+from tools.config.locust import LocustUserConfig
 
 
 class Settings(BaseSettings):
+    # Конфигурация загрузки — откуда брать переменные
     model_config = SettingsConfigDict(
-        extra='allow',
-        env_file=os.environ.get('ENV_FILE'),
-        env_file_encoding='utf-8',
-        env_nested_delimiter='.'
+        extra="allow",  # Разрешить дополнительные поля (например, неиспользуемые переменные)
+        env_file=".env",  # Указываем имя основного .env файла
+        env_file_encoding="utf-8",  # Кодировка файла
+        env_nested_delimiter="."  # Позволяет использовать вложенные переменные, например: LOCUST_USER.WAIT_TIME_MIN
     )
 
-    mock_http_server: HTTPServerConfig
-    mock_grpc_server: GRPCServerConfig
-
-    users_http_server: HTTPServerConfig
-    users_http_client: HTTPClientConfig
-    users_grpc_server: GRPCServerConfig
-    users_grpc_client: GRPCClientConfig
-    users_postgres_database: PostgresConfig
-
-    cards_http_server: HTTPServerConfig
-    cards_http_client: HTTPClientConfig
-    cards_grpc_server: GRPCServerConfig
-    cards_grpc_client: GRPCClientConfig
-    cards_postgres_database: PostgresConfig
-
-    gateway_http_server: HTTPServerConfig
-    gateway_grpc_server: GRPCServerConfig
-    gateway_redis_client: RedisClientConfig
-
-    payments_http_client: HTTPClientConfig
-    payments_grpc_client: GRPCClientConfig
-    payments_system_enabled: bool
-
-    accounts_http_server: HTTPServerConfig
-    accounts_http_client: HTTPClientConfig
-    accounts_grpc_server: GRPCServerConfig
-    accounts_grpc_client: GRPCClientConfig
-    accounts_postgres_database: PostgresConfig
-
-    documents_s3_client: S3ClientConfig
-    documents_http_server: HTTPServerConfig
-    documents_http_client: HTTPClientConfig
-    documents_grpc_server: GRPCServerConfig
-    documents_grpc_client: GRPCClientConfig
-    documents_kafka_client: KafkaClientConfig
-
-    operations_s3_client: S3ClientConfig
-    operations_http_server: HTTPServerConfig
-    operations_http_client: HTTPClientConfig
-    operations_grpc_server: GRPCServerConfig
-    operations_grpc_client: GRPCClientConfig
-    operations_postgres_database: PostgresConfig
+    # Вложенные секции настроек
+    locust_user: LocustUserConfig  # Настройки виртуального пользователя
+    gateway_http_client: HTTPClientConfig  # Настройки HTTP-клиента
+    gateway_grpc_client: GRPCClientConfig  # Настройки gRPC-клиента
 
 
+# Глобальный объект настроек — его можно импортировать в любом месте проекта
 settings = Settings()

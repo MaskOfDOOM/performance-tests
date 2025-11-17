@@ -1,3 +1,4 @@
+from datetime import datetime
 from pydantic import BaseModel, Field, ConfigDict, HttpUrl
 from enum import StrEnum
 from tools.fakers import fake
@@ -29,7 +30,7 @@ class OperationSchema(BaseModel):
     amount: float
     card_id: str = Field(alias="cardId")
     category: str
-    created_at: str = Field(alias="createdAt")
+    created_at: datetime = Field(alias="createdAt")
     account_id: str = Field(alias="accountId")
 
 class OperationReceiptSchema(BaseModel):
@@ -67,11 +68,10 @@ class GetOperationsResponseSchema(BaseModel):
 
 
 class GetOperationsSummaryQuerySchema(BaseModel):
+    """
+    Структура query параметров запроса для получения статистики по операциям счёта.
+    """
     model_config = ConfigDict(populate_by_name=True)
-    
-    """
-    Структура данных для получения списка операций пользователя.
-    """
     account_id: str = Field(alias="accountId")
 
 class GetOperationsSummaryResponseSchema(BaseModel):
