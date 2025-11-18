@@ -33,4 +33,4 @@ class CreateUserResponseSchema(BaseModel):
     user: UserSchema
 
 
-print(CreateUserRequestSchema())
+# print(CreateUserRequestSchema())

@@ -18,4 +18,4 @@ user = User(
     email="alice@example.com",
     address=Address(city="New York", zip_code="10001")
 )
-print(user)
+# print(user)

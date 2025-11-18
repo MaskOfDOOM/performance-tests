@@ -22,7 +22,7 @@ user_default_model = UserSchema(
     middleName="Olegovich",
     phoneNumber="88005553535"
 )
-print('User default model:', user_default_model)
+# print('User default model:', user_default_model)
 
 
 class CreateUserRequestSchema(BaseModel):
@@ -42,7 +42,7 @@ create_user_request_model = CreateUserRequestSchema(
     middleName="Olegovich",
     phoneNumber="88005553535"
 )
-print('Create user request model:', create_user_request_model)
+# print('Create user request model:', create_user_request_model)
 
 
 
@@ -55,4 +55,4 @@ class CreateUserResponseSchema(BaseModel):
 create_user_response_model = CreateUserResponseSchema(
     user=user_default_model
 )
-print('Create user response', create_user_response_model)
+# print('Create user response', create_user_response_model)

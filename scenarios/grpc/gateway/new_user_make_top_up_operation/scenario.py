@@ -8,7 +8,7 @@ from contracts.services.gateway.users.rpc_create_user_pb2 import CreateUserRespo
 from tools.locust.user import LocustBaseUser
 
 
-class MakePurchaseOperationSequentialTaskSet(GatewayGRPCSequentialTaskSet):
+class MakeTopUpOperationSequentialTaskSet(GatewayGRPCSequentialTaskSet):
     create_user_response: CreateUserResponse | None = None
     open_debit_card_account_response: OpenDebitCardAccountResponse | None = None
     make_top_up_operation_response: MakeTopUpOperationResponse | None = None
@@ -63,5 +63,5 @@ class MakePurchaseOperationSequentialTaskSet(GatewayGRPCSequentialTaskSet):
             operation_id=self.make_top_up_operation_response.operation.id
         )
 
-class MakePurchaseOperationScenarioUser(LocustBaseUser):
-    tasks = [MakePurchaseOperationSequentialTaskSet]
+class MakeTopUpOperationScenarioUser(LocustBaseUser):
+    tasks = [MakeTopUpOperationSequentialTaskSet]
