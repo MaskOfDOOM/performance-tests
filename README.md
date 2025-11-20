@@ -1,91 +1,142 @@
-# Performance Testing Stand
+# Performance Tests
 
-This project implements a full-featured **educational banking platform** designed specifically for use in
-the course [Нагрузочное тестирование на Python](https://stepik.org/course/242935/promo).
+This project implements performance tests for
+the [Performance QA Engineer Course](https://github.com/Nikita-Filonov/performance-qa-engineer-course) stand — a
+full-featured educational banking system designed for testing and performance validation in training environments. The
+platform includes services such as `Kafka`, `Redis`, `PostgreSQL`, `MinIO`, `Grafana`, `Prometheus` and exposes its API
+via both HTTP and gRPC protocols.
 
-The stand simulates a realistic microservice architecture and is intended for testing, debugging, and performance
-validation in a controlled training environment.
+**Technologies used**:
+
+- `Python`
+- `Locust`
+- `Pydantic`
+- `gRPC` / `grpcio`
+- `HTTP` / `HTTPX`
+- `Docker`
+- `Kafka`
+- `Redis`
+- `PostgreSQL`
+- `MinIO`
+- `Grafana`
+- `Prometheus`
+
+Performance tests are written in **Python** using **Locust** and follow modern software engineering principles like
+**SOLID**, **DRY**, and **KISS**. They are designed to simulate realistic business flows and provide visibility into
+system performance under load.
+
 
 ---
 
-## Features
+## Table of Contents
 
-- Microservice-based banking system
-- API available via both **HTTP** and **gRPC**
-- Integrated observability stack: **Prometheus**, **Grafana**, **cAdvisor**
-- Event-driven architecture via **Kafka**
-- Test data storage in **PostgreSQL**, **Redis**, and **MinIO**
-- Pre-configured for use with tools like **Locust**, **Postman**, **grpcurl**, etc.
+- [Project Overview](#project-overview)
+- [Best Practices](#best-practices)
+- [Getting Started](#getting-started)
+- [Running Performance Tests](#running-performance-tests)
+- [Monitoring & Observability](#monitoring--observability)
+- [CI/CD](#cicd)
 
 ---
 
-## Technologies Used
+## Project Overview
 
-| Component      | Purpose                          |
-|----------------|----------------------------------|
-| **Kafka**      | Async event-driven communication |
-| **Redis**      | Caching layer                    |
-| **PostgreSQL** | Persistent storage per service   |
-| **MinIO**      | Object storage (e.g., documents) |
-| **Prometheus** | Metrics collection               |
-| **Grafana**    | Visualization of metrics         |
-| **gRPC**       | High-performance RPC API         |
-| **HTTP**       | REST API via HTTP gateway        |
+This performance testing framework supports both **HTTP** and **gRPC** APIs using a unified test structure.
+
+Key components:
+
+- **Scenarios**: Represent realistic user flows, implemented via Locust user classes.
+- **API Clients**: Custom reusable HTTP/gRPC clients located in [clients/http/](./clients/http)
+  and [clients/grpc/](./clients/grpc), independent of Locust internals.
+- **Seeding**: Automated test data generation via a flexible [seeding builder](./seeds/builder.py), triggered through
+  Locust event hooks based on the active [scenario plan](./seeds/schema/plan.py).
+- **Tools**: Includes generators for fake data, base configurations, and shared Locust user logic.
+- **Reporting**: Built-in HTML reports for Locust runs; Prometheus and Grafana metrics available via the course test
+  stand.
+
+Supported business scenarios include:
+
+- Existing user: make purchase, get documents, issue virtual card, view operations
+- New user: create account, top up card, issue physical card, retrieve account list and documents
+
+---
+
+## Best Practices
+
+This project follows industry-standard best practices:
+
+- **SOLID** design principles for maintainable client architecture
+- **DRY** approach to avoid duplication across protocols
+- **KISS** philosophy to keep scenarios readable and focused
+- Flexible structure to support both HTTP and gRPC testing
+- Reusable API clients, designed to be composable and injectable
+- The framework is easy to extend with new scenarios or client implementations as the system evolves
 
 ---
 
 ## Getting Started
 
-> Requirements: Docker & Docker Compose installed
-
-### 1. Clone the repository
+### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/Nikita-Filonov/performance-qa-engineer-course.git
-cd performance-qa-engineer-course
+git clone https://github.com/MaskOfDOOM/performance-tests
+cd performance-tests
 ```
 
-### 2. Generate gRPC/Protobuf code
+### 2. Create a Virtual Environment
 
-This project uses `.proto` files to define gRPC services and gateway interfaces.
+#### Linux / MacOS
 
 ```bash
-./scripts/protos.sh
+python3 -m venv venv
+source venv/bin/activate
 ```
 
-> Make sure you have protoc and necessary plugins installed. See [scripts/proto.sh](./scripts/protos.sh) for details.
-
-### 3. Build base image
-
-To avoid repeated setup across all microservices, a shared base image is used:
+#### Windows
 
 ```bash
-docker build -f Dockerfile.base -t base-service .
+python -m venv venv
+venv\Scripts\activate
 ```
 
-### 4. Launch the stand
-
-This will build and launch all services:
+### 3. Install Dependencies
 
 ```bash
-docker compose up --build
+pip install -r requirements.txt
 ```
 
-By default, services will be available at:
+---
 
-- HTTP gateway: http://localhost:8003
-- gRPC gateway: localhost:9003
-- Grafana: http://localhost:3002
-- Kafka UI: http://localhost:8081
-- MinIO: http://localhost:3001
-- Postgres Admin: http://localhost:5050
+## Running Performance Tests
 
-## Architecture
+Each scenario can be launched via its own configuration file. The report will be automatically saved in the same
+directory.
 
-![Architecture](./docs/architecture/core.png)
+Example:
 
-## Notes
+```bash
+locust --config=./scenarios/http/gateway/existing_user_get_documents/v1.0.conf
+```
 
-- The stand is not intended for production use.
-- Services may be simplified or instrumented specifically for teaching and testing purposes.
-- Performance characteristics may vary between environments.
+After test execution, open the generated HTML report: `./scenarios/http/gateway/existing_user_get_documents/report.html`
+
+---
+
+## Monitoring & Observability
+
+In addition to built-in Locust reports, system-level metrics can be explored via:
+
+- **Grafana:** http://localhost:3002
+- **Prometheus:** http://localhost:9090
+
+These dashboards are preconfigured in
+the [course infrastructure repository](https://github.com/Nikita-Filonov/performance-qa-engineer-course).
+
+---
+
+## CI/CD
+
+GitHub Actions integration is enabled for this project. You can execute scenarios in headless mode and publish reports
+to GitHub Pages automatically.
+
+Configuration can be found in [.github/workflows/performance-tests.yml](./.github/workflows/performance-tests.yml).
